@@ -32,15 +32,14 @@ export async function connectMongo() {
   const cache = cached!;
 
   if (cache.conn) {
-    // Check if connection is still alive
-    try {
-      await cache.conn.connection.db.admin().ping();
+    // If Mongoose reports connected (1), reuse it; otherwise reconnect
+    const ready = cache.conn.connection?.readyState === 1;
+    if (ready) {
       return cache.conn;
-    } catch (error) {
-      console.log("MongoDB connection lost, reconnecting...");
-      cache.conn = null;
-      cache.promise = null;
     }
+    console.log("MongoDB connection not ready, reconnecting...");
+    cache.conn = null;
+    cache.promise = null;
   }
 
   if (!cache.promise) {
