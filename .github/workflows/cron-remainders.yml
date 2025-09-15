@@ -1,14 +1,23 @@
 name: Send Quiet Hours Reminders
 on:
   schedule:
-    - cron: "*/1 * * * *"
+    - cron: "*/5 * * * *" # every 5 min for testing, change later
   workflow_dispatch:
+
 jobs:
   send-reminders:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Reminders
+      - name: Call reminders endpoint
         run: |
-          curl -X POST "${{ secrets.APP_URL }}/api/cron/send-reminders" \
+          set -e
+          echo "UTC now: $(date -u)"
+          echo "Calling: ${{ secrets.APP_URL }}/api/cron/send-reminders"
+          http_code=$(curl -sS -o response.txt -w "%{http_code}" -X POST \
+            "${{ secrets.APP_URL }}/api/cron/send-reminders" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            -H "Content-Type: application/json"
+            -H "Content-Type: application/json")
+          echo "HTTP $http_code"
+          echo "Response body:"
+          cat response.txt
+          test "$http_code" -ge 200 -a "$http_code" -lt 300
