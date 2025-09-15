@@ -72,7 +72,17 @@ export default async function BlocksPage() {
                   <div className="flex-1">
                     <div className="font-medium">{block.title}</div>
                     <div className="text-sm text-neutral-600 dark:text-neutral-400">
-                      {startDate.toLocaleString()} → {endDate.toLocaleString()}
+                      {startDate.toLocaleString(undefined, {
+                        timeZone: "Asia/Kolkata",
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}{" "}
+                      →{" "}
+                      {endDate.toLocaleString(undefined, {
+                        timeZone: "Asia/Kolkata",
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}
                     </div>
                     <div className="text-xs text-neutral-500 dark:text-neutral-500 mt-1">
                       Created: {new Date(block.createdAtISO).toLocaleString()}
