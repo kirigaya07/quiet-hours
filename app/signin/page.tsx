@@ -1,17 +1,16 @@
 // app/signin/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { createBrowserClient } from "@/lib/supabase/client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
-export default function SignInPage() {
+function SignInInner() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
     "idle"
   );
   const [message, setMessage] = useState("");
-  // const router = useRouter(); // Unused for now
   const searchParams = useSearchParams();
 
   // Check for auth errors from callback
@@ -98,5 +97,13 @@ export default function SignInPage() {
         </p>
       )}
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={null}>
+      <SignInInner />
+    </Suspense>
   );
 }
