@@ -1,7 +1,7 @@
 name: Send Quiet Hours Reminders
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/1 * * * *"
   workflow_dispatch:
 jobs:
   send-reminders:
