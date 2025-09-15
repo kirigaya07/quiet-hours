@@ -85,7 +85,12 @@ export default async function BlocksPage() {
                       })}
                     </div>
                     <div className="text-xs text-neutral-500 dark:text-neutral-500 mt-1">
-                      Created: {new Date(block.createdAtISO).toLocaleString()}
+                      Created:{" "}
+                      {new Date(block.createdAtISO).toLocaleString(undefined, {
+                        timeZone: "Asia/Kolkata",
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      })}
                     </div>
                   </div>
                   <div className="ml-4">
