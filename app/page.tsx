@@ -58,8 +58,17 @@ export default async function Page() {
               >
                 <div className="font-medium">{b.title}</div>
                 <div className="text-sm text-neutral-600 dark:text-neutral-400">
-                  {new Date(b.startAtISO).toLocaleString()} →{" "}
-                  {new Date(b.endAtISO).toLocaleString()}
+                  {new Date(b.startAtISO).toLocaleString(undefined, {
+                    timeZone: "Asia/Kolkata",
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}{" "}
+                  →{" "}
+                  {new Date(b.endAtISO).toLocaleString(undefined, {
+                    timeZone: "Asia/Kolkata",
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
                 </div>
               </li>
             )
