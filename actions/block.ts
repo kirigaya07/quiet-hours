@@ -8,6 +8,7 @@ import { scheduleBlockReminder } from "@/actions/email";
 export async function createBlock(input: {
   userId: string;
   userEmail?: string;
+  userTimeZone?: string;
   title: string;
   startAtISO: string;
   endAtISO: string;
@@ -39,7 +40,8 @@ export async function createBlock(input: {
     await scheduleBlockReminder(
       doc._id.toString(),
       input.userId,
-      input.userEmail
+      input.userEmail,
+      input.userTimeZone
     );
   } catch (error) {
     console.error("Failed to queue/send reminder:", error);

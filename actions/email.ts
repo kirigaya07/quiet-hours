@@ -10,7 +10,8 @@ import { sendEmail, generateBlockReminderEmail } from "@/lib/email";
 export async function scheduleBlockReminder(
   blockId: string,
   userId: string,
-  userEmail?: string
+  userEmail?: string,
+  userTimeZone?: string
 ) {
   await connectMongo();
 
@@ -54,7 +55,8 @@ export async function scheduleBlockReminder(
       scheduledFor: reminderTime,
       status: "pending",
       dedupeKey: dedupeKey,
-    });
+      // persist tz if you add it to the schema in the future
+    } as any);
 
     console.log(
       `Scheduled reminder for block ${blockId} at ${reminderTime.toISOString()}`
@@ -99,9 +101,15 @@ export async function sendScheduledReminders() {
         continue;
       }
 
-      // Format times for email
-      const startTime = block.startAt.toLocaleString();
-      const endTime = block.endAt.toLocaleString();
+      // Format times for email in Indian Standard Time
+      const tz = "Asia/Kolkata";
+      const formatter = new Intl.DateTimeFormat(undefined, {
+        timeZone: tz,
+        dateStyle: "medium",
+        timeStyle: "short",
+      });
+      const startTime = formatter.format(block.startAt);
+      const endTime = formatter.format(block.endAt);
 
       // Send email
       if (!recipientEmail) {

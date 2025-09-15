@@ -31,6 +31,8 @@ export default function NewBlockPage() {
       await createBlock({
         userId: user.id,
         userEmail: user.email ?? undefined,
+        userTimeZone:
+          Intl.DateTimeFormat().resolvedOptions().timeZone ?? undefined,
         title,
         startAtISO: new Date(startAt).toISOString(),
         endAtISO: new Date(endAt).toISOString(),
